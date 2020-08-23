@@ -16,7 +16,7 @@ data = pd.read_csv(dataset, sep=';')
 y = data.quality
 X = data.drop('quality', axis=1)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=123, stratify=y)
-X_train_scaled = preprocessing.scale(X_train)
+# X_train_scaled = preprocessing.scale(X_train)
 scaler = preprocessing.StandardScaler().fit(X_train)
 X_train_scaled = scaler.transform(X_train)
 X_test_scaled = scaler.transform(X_test)
@@ -32,3 +32,11 @@ clf.fit(X_train, y_train)
 # print (clf.best_params_)
 
 print (clf.refit)
+y_pred = clf.predict(X_test)
+#print (r2_score(y_test, y_pred))
+print (mean_squared_error(y_test, y_pred))
+
+	
+joblib.dump(clf, 'rf_regressor.pkl')
+clf2 = joblib.load('rf_regressor.pkl')
+clf2.predict(X_test)
